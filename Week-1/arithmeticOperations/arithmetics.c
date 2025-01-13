@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int main() 
-{
+int main() {
     int num1 = 10;
     int num2 = 5;
 

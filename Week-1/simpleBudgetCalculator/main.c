@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int main() 
-{
+int main() {
     char name[50];
     float income, expenses, savings;
 

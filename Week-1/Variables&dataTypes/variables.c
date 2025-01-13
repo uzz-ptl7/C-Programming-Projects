@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() 
-{
+int main() {
     int age = 20;
     float weight = 70.5;
     char grade = 'A';
