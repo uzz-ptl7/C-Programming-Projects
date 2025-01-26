@@ -18,6 +18,8 @@ int main() {
     printf("Enter a Character: ");
     scanf("%c", &c);
 
+    getchar();
+
     // Output the entered values
     printf("\n---You Entered---\n");
     printf("Integer: %d\n", num);

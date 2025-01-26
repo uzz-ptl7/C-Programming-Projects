@@ -15,6 +15,8 @@ int main() {
     printf("Enter your Total Expenses: ");
     scanf("%f", &expenses);
 
+    getchar(); 
+
     // Calculating remaining savings
     savings = income - expenses;
 
