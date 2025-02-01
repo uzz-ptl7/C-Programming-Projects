@@ -10,23 +10,65 @@ struct Train
     int price;
 };
 
+// Global train array
+struct Train trains[] = {
+    {101, "Kigali", 30, 5000},
+    {102, "Musanze", 25, 4500},
+    {103, "Rubavu", 15, 3500},
+    {104, "Nyundo", 20, 4000},
+    {105, "Huye", 10, 3000}};
+
+int numTrains = sizeof(trains) / sizeof(trains[0]);
+
 // Function to display available trains
 void viewAvailableTrains()
 {
-    struct Train trains[] = {
-        {101, "Kigali", 30, 5000},
-        {102, "Musanze", 25, 4500},
-        {103, "Rubavu", 15, 3500},
-        {104, "Nyundo", 20, 4000},
-        {105, "Huye", 10, 3000}};
-
-    int numTrains = sizeof(trains) / sizeof(trains[0]);
-
     printf("\nAvailable Trains:\n");
     for (int i = 0; i < numTrains; i++)
     {
         printf("Train No: %d, Destination: %s, Available Seats: %d, Price: %d RWF\n",
                trains[i].number, trains[i].destination, trains[i].availableSeats, trains[i].price);
+    }
+}
+
+// Function to book tickets
+void bookTickets()
+{
+    int trainNumber, seatsToBook, i, found = 0;
+
+    printf("\nEnter Train Number to book tickets: ");
+    scanf("%d", &trainNumber);
+    getchar();
+
+    // Search for train
+    for (i = 0; i < numTrains; i++)
+    {
+        if (trains[i].number == trainNumber)
+        {
+            found = 1;
+            printf("Enter number of seats to book: ");
+            scanf("%d", &seatsToBook);
+            getchar();
+
+            // Check seat availability
+            if (seatsToBook > 0 && seatsToBook <= trains[i].availableSeats)
+            {
+                trains[i].availableSeats -= seatsToBook;
+                printf("✅ Booking successful! %d seats booked on Train No: %d to %s.\n",
+                       seatsToBook, trainNumber, trains[i].destination);
+                printf("Remaining Seats: %d\n", trains[i].availableSeats);
+            }
+            else
+            {
+                printf("❌ Not enough seats available or invalid input. Try again.\n");
+            }
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        printf("❌ Train not found. Please enter a valid train number.\n");
     }
 }
 
@@ -45,7 +87,7 @@ int main()
         printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        getchar(); // Consume newline
+        getchar();
 
         // Process user choice using switch
         switch (choice)
@@ -54,7 +96,7 @@ int main()
             viewAvailableTrains();
             break;
         case 2:
-            printf("Book tickets feature coming soon!\n");
+            bookTickets();
             break;
         case 3:
             printf("Cancel tickets feature coming soon!\n");
@@ -70,7 +112,7 @@ int main()
         }
 
         printf("\nPress Enter to continue...");
-        getchar(); // Wait for user input before clearing the screen
+        getchar();
     }
 
     return 0;
