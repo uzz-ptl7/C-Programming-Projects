@@ -8,15 +8,16 @@ struct Train
     char destination[20];
     int availableSeats;
     int price;
+    int bookedSeats; // Track booked seats for validation
 };
 
 // Global train array
 struct Train trains[] = {
-    {101, "Kigali", 30, 5000},
-    {102, "Musanze", 25, 4500},
-    {103, "Rubavu", 15, 3500},
-    {104, "Nyundo", 20, 4000},
-    {105, "Huye", 10, 3000}};
+    {101, "Kigali", 30, 5000, 0},
+    {102, "Musanze", 25, 4500, 0},
+    {103, "Rubavu", 15, 3500, 0},
+    {104, "Nyundo", 20, 4000, 0},
+    {105, "Huye", 10, 3000, 0}};
 
 int numTrains = sizeof(trains) / sizeof(trains[0]);
 
@@ -54,6 +55,7 @@ void bookTickets()
             if (seatsToBook > 0 && seatsToBook <= trains[i].availableSeats)
             {
                 trains[i].availableSeats -= seatsToBook;
+                trains[i].bookedSeats += seatsToBook; // Track booked seats
                 printf("✅ Booking successful! %d seats booked on Train No: %d to %s.\n",
                        seatsToBook, trainNumber, trains[i].destination);
                 printf("Remaining Seats: %d\n", trains[i].availableSeats);
@@ -61,6 +63,48 @@ void bookTickets()
             else
             {
                 printf("❌ Not enough seats available or invalid input. Try again.\n");
+            }
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        printf("❌ Train not found. Please enter a valid train number.\n");
+    }
+}
+
+// Function to cancel tickets
+void cancelTickets()
+{
+    int trainNumber, seatsToCancel, i, found = 0;
+
+    printf("\nEnter Train Number to cancel tickets: ");
+    scanf("%d", &trainNumber);
+    getchar();
+
+    // Search for train
+    for (i = 0; i < numTrains; i++)
+    {
+        if (trains[i].number == trainNumber)
+        {
+            found = 1;
+            printf("Enter number of seats to cancel: ");
+            scanf("%d", &seatsToCancel);
+            getchar();
+
+            // Check if cancellation is valid
+            if (seatsToCancel > 0 && seatsToCancel <= trains[i].bookedSeats)
+            {
+                trains[i].availableSeats += seatsToCancel;
+                trains[i].bookedSeats -= seatsToCancel; // Reduce booked seats
+                printf("✅ Cancellation successful! %d seats canceled on Train No: %d to %s.\n",
+                       seatsToCancel, trainNumber, trains[i].destination);
+                printf("Remaining Seats: %d\n", trains[i].availableSeats);
+            }
+            else
+            {
+                printf("❌ Invalid cancellation request. Either no seats booked or invalid input.\n");
             }
             break;
         }
@@ -99,7 +143,7 @@ int main()
             bookTickets();
             break;
         case 3:
-            printf("Cancel tickets feature coming soon!\n");
+            cancelTickets();
             break;
         case 4:
             printf("Search by destination feature coming soon!\n");
