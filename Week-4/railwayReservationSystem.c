@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Define structure for train details
 struct Train
@@ -41,7 +42,6 @@ void bookTickets()
     scanf("%d", &trainNumber);
     getchar();
 
-    // Search for train
     for (i = 0; i < numTrains; i++)
     {
         if (trains[i].number == trainNumber)
@@ -51,11 +51,10 @@ void bookTickets()
             scanf("%d", &seatsToBook);
             getchar();
 
-            // Check seat availability
             if (seatsToBook > 0 && seatsToBook <= trains[i].availableSeats)
             {
                 trains[i].availableSeats -= seatsToBook;
-                trains[i].bookedSeats += seatsToBook; // Track booked seats
+                trains[i].bookedSeats += seatsToBook;
                 printf("✅ Booking successful! %d seats booked on Train No: %d to %s.\n",
                        seatsToBook, trainNumber, trains[i].destination);
                 printf("Remaining Seats: %d\n", trains[i].availableSeats);
@@ -83,7 +82,6 @@ void cancelTickets()
     scanf("%d", &trainNumber);
     getchar();
 
-    // Search for train
     for (i = 0; i < numTrains; i++)
     {
         if (trains[i].number == trainNumber)
@@ -93,11 +91,10 @@ void cancelTickets()
             scanf("%d", &seatsToCancel);
             getchar();
 
-            // Check if cancellation is valid
             if (seatsToCancel > 0 && seatsToCancel <= trains[i].bookedSeats)
             {
                 trains[i].availableSeats += seatsToCancel;
-                trains[i].bookedSeats -= seatsToCancel; // Reduce booked seats
+                trains[i].bookedSeats -= seatsToCancel;
                 printf("✅ Cancellation successful! %d seats canceled on Train No: %d to %s.\n",
                        seatsToCancel, trainNumber, trains[i].destination);
                 printf("Remaining Seats: %d\n", trains[i].availableSeats);
@@ -116,13 +113,39 @@ void cancelTickets()
     }
 }
 
+// Function to search trains by destination
+void searchTrains()
+{
+    char destination[20];
+    int found = 0;
+
+    printf("\nEnter destination to search for trains: ");
+    scanf("%s", destination);
+    getchar();
+
+    printf("\nTrains going to %s:\n", destination);
+    for (int i = 0; i < numTrains; i++)
+    {
+        if (strcmp(trains[i].destination, destination) == 0)
+        {
+            found = 1;
+            printf("Train No: %d, Available Seats: %d, Price: %d RWF\n",
+                   trains[i].number, trains[i].availableSeats, trains[i].price);
+        }
+    }
+
+    if (!found)
+    {
+        printf("❌ No trains found for the destination: %s.\n", destination);
+    }
+}
+
 int main()
 {
     int choice;
 
     while (1)
     {
-        // Display menu options
         printf("\nRailway Reservation System\n");
         printf("1. View available trains\n");
         printf("2. Book tickets\n");
@@ -133,7 +156,6 @@ int main()
         scanf("%d", &choice);
         getchar();
 
-        // Process user choice using switch
         switch (choice)
         {
         case 1:
@@ -146,7 +168,7 @@ int main()
             cancelTickets();
             break;
         case 4:
-            printf("Search by destination feature coming soon!\n");
+            searchTrains();
             break;
         case 5:
             printf("Exiting the system. Thank you!\n");
