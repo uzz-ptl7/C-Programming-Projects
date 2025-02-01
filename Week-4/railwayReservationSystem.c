@@ -1,6 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Define structure for train details
+struct Train
+{
+    int number;
+    char destination[20];
+    int availableSeats;
+    int price;
+};
+
+// Function to display available trains
+void viewAvailableTrains()
+{
+    struct Train trains[] = {
+        {101, "Kigali", 30, 5000},
+        {102, "Musanze", 25, 4500},
+        {103, "Rubavu", 15, 3500},
+        {104, "Nyundo", 20, 4000},
+        {105, "Huye", 10, 3000}};
+
+    int numTrains = sizeof(trains) / sizeof(trains[0]);
+
+    printf("\nAvailable Trains:\n");
+    for (int i = 0; i < numTrains; i++)
+    {
+        printf("Train No: %d, Destination: %s, Available Seats: %d, Price: %d RWF\n",
+               trains[i].number, trains[i].destination, trains[i].availableSeats, trains[i].price);
+    }
+}
+
 int main()
 {
     int choice;
@@ -16,14 +45,13 @@ int main()
         printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
-        getchar();
+        getchar(); // Consume newline
 
         // Process user choice using switch
         switch (choice)
         {
         case 1:
-            printf("View available trains feature coming soon!\n");
+            viewAvailableTrains();
             break;
         case 2:
             printf("Book tickets feature coming soon!\n");
@@ -40,8 +68,10 @@ int main()
         default:
             printf("Invalid choice! Please select a valid option.\n");
         }
+
+        printf("\nPress Enter to continue...");
+        getchar(); // Wait for user input before clearing the screen
     }
 
-    getchar();
     return 0;
 }
